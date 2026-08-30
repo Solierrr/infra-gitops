@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-auth
+  labels:
+    app: api-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-auth
+  template:
+    metadata:
+      labels:
+        app: api-auth
+    spec:
+      containers:
+        - name: api-auth
+          image: docker.io/solarianetwork/api-auth:337574c
+          # server.port default is 8081 (see application.properties), even
+          # though the Dockerfile EXPOSEs 8080 - that EXPOSE is stale.
+          ports:
+            - containerPort: 8081
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          # No actuator/health endpoint in this service yet, so probing by
+          # TCP connect instead of an HTTP path.
+          readinessProbe:
+            tcpSocket:
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 20

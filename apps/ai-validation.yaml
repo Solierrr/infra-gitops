@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ai-validation
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Solierrr/infra-gitops.git
+    targetRevision: main
+    path: services/ai-validation
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
