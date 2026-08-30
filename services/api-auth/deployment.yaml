@@ -5,8 +5,6 @@ metadata:
   labels:
     app: api-auth
 spec:
-  # 0 until JWT keystore, Postgres, and Redis are wired up - it crash-loops
-  # otherwise, just reserving node capacity for nothing.
   replicas: 0
   selector:
     matchLabels:
@@ -18,9 +16,7 @@ spec:
     spec:
       containers:
         - name: api-auth
-          image: docker.io/solarianetwork/api-auth:337574c
-          # server.port default is 8081 (see application.properties), even
-          # though the Dockerfile EXPOSEs 8080 - that EXPOSE is stale.
+          image: docker.io/solarianetwork/api-auth:latest
           ports:
             - containerPort: 8081
           resources:
@@ -30,8 +26,6 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
-          # No actuator/health endpoint in this service yet, so probing by
-          # TCP connect instead of an HTTP path.
           readinessProbe:
             tcpSocket:
               port: 8081

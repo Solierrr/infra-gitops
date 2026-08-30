@@ -5,8 +5,6 @@ metadata:
   labels:
     app: api-messenger
 spec:
-  # 0 until required secrets (SERVICE_JWT_SECRET) are wired up - it
-  # crash-loops otherwise, just reserving node capacity for nothing.
   replicas: 0
   selector:
     matchLabels:
@@ -18,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-messenger
-          image: docker.io/solarianetwork/api-messenger:b9adacb
+          image: docker.io/solarianetwork/api-messenger:latest
           ports:
             - containerPort: 8080
           resources:

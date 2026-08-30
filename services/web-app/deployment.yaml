@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: web-app
-          image: docker.io/solarianetwork/web-app:4ba9267
+          image: docker.io/solarianetwork/web-app:latest
           ports:
             - containerPort: 80
           resources:
