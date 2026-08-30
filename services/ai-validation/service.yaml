@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-validation
+  labels:
+    app: ai-validation
+spec:
+  type: ClusterIP
+  selector:
+    app: ai-validation
+  ports:
+    - port: 8000
+      targetPort: 8000
