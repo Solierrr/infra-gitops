@@ -5,7 +5,9 @@ metadata:
   labels:
     app: api-messenger
 spec:
-  replicas: 1
+  # 0 until required secrets (SERVICE_JWT_SECRET) are wired up - it
+  # crash-loops otherwise, just reserving node capacity for nothing.
+  replicas: 0
   selector:
     matchLabels:
       app: api-messenger
