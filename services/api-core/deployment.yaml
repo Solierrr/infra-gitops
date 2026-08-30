@@ -5,7 +5,10 @@ metadata:
   labels:
     app: api-core
 spec:
-  replicas: 1
+  # 0 until required secrets (SERVICE_JWT_SECRET, Cloudinary, Google
+  # Translate) and Postgres are wired up - it crash-loops otherwise, just
+  # reserving node capacity for nothing.
+  replicas: 0
   selector:
     matchLabels:
       app: api-core
