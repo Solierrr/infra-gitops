@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-recommendation
-          image: docker.io/solarianetwork/api-recommendation:4e8473b
+          image: docker.io/solarianetwork/api-recommendation:latest
           ports:
             - containerPort: 8000
           resources:

@@ -5,9 +5,6 @@ metadata:
   labels:
     app: api-core
 spec:
-  # 0 until required secrets (SERVICE_JWT_SECRET, Cloudinary, Google
-  # Translate) and Postgres are wired up - it crash-loops otherwise, just
-  # reserving node capacity for nothing.
   replicas: 0
   selector:
     matchLabels:
@@ -19,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-core
-          image: docker.io/solarianetwork/api-core:7db6fd3
+          image: docker.io/solarianetwork/api-core:latest
           ports:
             - containerPort: 8080
           resources:

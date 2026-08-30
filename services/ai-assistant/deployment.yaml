@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ai-assistant
-          image: docker.io/solarianetwork/ai-assistant:7da4042
+          image: docker.io/solarianetwork/ai-assistant:latest
           ports:
             - containerPort: 8000
           resources:
