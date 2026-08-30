@@ -1,0 +1,27 @@
+# App of Apps: this is the one Application applied manually (kubectl apply
+# -f bootstrap/root-app.yaml) to bootstrap everything else. It watches
+# apps/, and every Application manifest ArgoCD finds there gets created
+# automatically - adding a new service later means adding a file under
+# apps/, nothing else.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Solierrr/infra-gitops.git
+    targetRevision: main
+    path: apps
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
