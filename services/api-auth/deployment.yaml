@@ -19,6 +19,13 @@ spec:
           image: docker.io/solarianetwork/api-auth:latest
           ports:
             - containerPort: 8081
+          env:
+            # api-core identifies itself as "persistence" internally
+            # (spring.application.name=persistence) - api-auth calls it to
+            # provision users. Service DNS, not an external URL: this is
+            # east-west traffic, never goes through Kong.
+            - name: PERSISTENCE_BASE_URL
+              value: http://api-core:8080
           resources:
             requests:
               cpu: 200m
