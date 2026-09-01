@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-messenger
+spec:
+  ingressClassName: kong
+  rules:
+    - host: api-messenger.34.42.214.54.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-messenger
+                port:
+                  number: 8080

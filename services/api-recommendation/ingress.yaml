@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-recommendation
+spec:
+  ingressClassName: kong
+  rules:
+    - host: api-recommendation.34.42.214.54.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-recommendation
+                port:
+                  number: 8000

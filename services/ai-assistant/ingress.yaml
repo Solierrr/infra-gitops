@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ai-assistant
+spec:
+  ingressClassName: kong
+  rules:
+    - host: ai-assistant.34.42.214.54.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ai-assistant
+                port:
+                  number: 8000
