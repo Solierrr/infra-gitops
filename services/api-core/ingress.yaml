@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-core
+spec:
+  ingressClassName: kong
+  rules:
+    - host: api-core.34.70.130.195.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-core
+                port:
+                  number: 8080
