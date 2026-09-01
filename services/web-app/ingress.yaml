@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-    - host: web.34.39.151.199.sslip.io
+    - host: web.solaria.com
       http:
         paths:
           - path: /
