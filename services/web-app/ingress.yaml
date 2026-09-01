@@ -3,15 +3,15 @@ kind: Ingress
 metadata:
   name: web-app
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-prod-http01
 spec:
   ingressClassName: kong
   tls:
     - hosts:
-        - web.solaria.com
+        - solaria.is-a.dev
       secretName: web-app-tls
   rules:
-    - host: web.solaria.com
+    - host: solaria.is-a.dev
       http:
         paths:
           - path: /
