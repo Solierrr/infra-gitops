@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ai-assistant
+  name: api-mcp
   labels:
-    app: ai-assistant
+    app: api-mcp
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
-      app: ai-assistant
+      app: api-mcp
   template:
     metadata:
       labels:
-        app: ai-assistant
+        app: api-mcp
     spec:
       containers:
-        - name: ai-assistant
-          image: docker.io/solarianetwork/ai-assistant:latest
+        - name: api-mcp
+          image: docker.io/solarianetwork/api-mcp:latest
           ports:
-            - containerPort: 8000
+            - containerPort: 8001
           envFrom:
             - secretRef:
-                name: ai-assistant-secrets
+                name: api-mcp-secrets
           resources:
             requests:
               cpu: 100m
@@ -30,14 +30,12 @@ spec:
               cpu: 250m
               memory: 256Mi
           readinessProbe:
-            httpGet:
-              path: /health
-              port: 8000
+            tcpSocket:
+              port: 8001
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /health
-              port: 8000
+            tcpSocket:
+              port: 8001
             initialDelaySeconds: 10
             periodSeconds: 20

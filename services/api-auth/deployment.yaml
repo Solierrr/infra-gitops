@@ -23,7 +23,11 @@ spec:
             - secretRef:
                 name: api-auth-secrets
           env:
-            - name: CORE_BASE_URL
+            # api-auth lê essa URL via PERSISTENCE_BASE_URL
+            # (app.integration.persistence.base-url), não CORE_BASE_URL - o
+            # nome errado aqui fazia cair no default localhost:8080 dentro
+            # do pod, quebrando a chamada api-auth -> api-core em prod.
+            - name: PERSISTENCE_BASE_URL
               value: http://api-core:8080
             - name: JWT_KEYSTORE_PATH
               value: /etc/secrets/jwt/keystore.p12
