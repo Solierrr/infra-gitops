@@ -8,10 +8,10 @@ spec:
   ingressClassName: kong
   tls:
     - hosts:
-        - web-app.34.70.130.195.sslip.io
+        - web.solarianetwork.site
       secretName: web-app-tls
   rules:
-    - host: web-app.34.70.130.195.sslip.io
+    - host: web.solarianetwork.site
       http:
         paths:
           - path: /
