@@ -45,3 +45,4 @@ Cada `Application` sob `apps/` (por exemplo `api-core.yaml`, `api-auth.yaml`, `w
 - [.github/CONTRIBUTING.md](./.github/CONTRIBUTING.md), convenções de commit, branch e Pull Request.
 - [CODE_OF_CONDUCT.md]({a confirmar}), código de conduta do projeto.
 - [SECURITY.md]({a confirmar}), como reportar vulnerabilidades de segurança.
+# test2
