@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-    - host: api-recommendation.34.135.202.187.sslip.io
+    - host: api-recommendation.solarianetwork.site
       http:
         paths:
           - path: /

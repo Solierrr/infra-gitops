@@ -8,10 +8,10 @@ spec:
   ingressClassName: kong
   tls:
     - hosts:
-        - web.solarianetwork.site
+        - solarianetwork.site
       secretName: web-app-tls
   rules:
-    - host: web.solarianetwork.site
+    - host: solarianetwork.site
       http:
         paths:
           - path: /
