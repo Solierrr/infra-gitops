@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-    - host: api-auth.34.70.130.195.sslip.io
+    - host: api-auth.34.135.202.187.sslip.io
       http:
         paths:
           - path: /
