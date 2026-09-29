@@ -1,6 +1,6 @@
-# infra-gitops
+# GitOps
 
-Este é o repositório GitOps central da organização Solierrr: aqui vivem os manifestos Kubernetes de cada serviço e as `Application` do [ArgoCD](https://argo-cd.readthedocs.io/) que os sincronizam com o cluster GKE. Em vez de aplicar `kubectl apply` manualmente contra o cluster, todo o estado desejado — Deployments, Services, Ingress e as próprias `Application` do ArgoCD — é declarado como YAML versionado aqui, e o ArgoCD assume a responsabilidade de manter o cluster convergido com o que está em `main`. O repositório segue o padrão **app-of-apps**: uma única `Application` raiz (`bootstrap/root-app.yaml`) observa a pasta `apps/`, e cada arquivo `.yaml` encontrado ali vira automaticamente uma nova `Application` filha, sem passos manuais adicionais além de adicionar o arquivo.
+Repositório responsável pela lógica de GitOps central do projeto, centralizando os manifestos Kubernetes de cada serviço e as `Application` do [ArgoCD](https://argo-cd.readthedocs.io/) que os sincronizam com o cluster GKE. Deployments, Services, Ingress e as próprias `Application` do ArgoCD são declaradas como YAML versionado e o ArgoCD assume a responsabilidade de manter o cluster convergido com o que está em `main`. O repositório segue o padrão **app-of-apps** onde uma única `Application` raiz (`bootstrap/root-app.yaml`) observa a pasta `apps/`, e cada arquivo `.yaml` encontrado vira automaticamente uma nova `Application`, sem passos manuais adicionais além de adicionar o arquivo.
 
 <p>
 
