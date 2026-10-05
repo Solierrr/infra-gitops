@@ -10,8 +10,21 @@ spec:
     - hosts:
         - solarianetwork.site
       secretName: web-app-tls
+    - hosts:
+        - origin.solarianetwork.site
+      secretName: web-app-origin-tls
   rules:
     - host: solarianetwork.site
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-app
+                port:
+                  number: 80
+    - host: origin.solarianetwork.site
       http:
         paths:
           - path: /
