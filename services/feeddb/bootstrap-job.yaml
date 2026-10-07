@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: database-bootstrap
+  labels:
+    app: database-bootstrap
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: database-bootstrap
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: database-bootstrap
+          image: docker.io/solarianetwork/database-bootstrap:REPLACE_WITH_RELEASE_SHA
+          envFrom:
+            - secretRef:
+                name: database-bootstrap-secrets
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
