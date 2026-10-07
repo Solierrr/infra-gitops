@@ -9,10 +9,11 @@ Este repositório segue o padrão **app-of-apps** do ArgoCD: uma única `Applica
 </p>
 
 - **App-of-apps via `bootstrap/root-app.yaml`**, a `Application` `root-app` usa `source.path: apps` com `directory.recurse: true`, ou seja, todo `.yaml` sob `apps/` (mesmo em subpastas) é tratado como definição de uma nova `Application` filha, com `syncPolicy.automated` (`prune: true`, `selfHeal: true`) e `CreateNamespace=true`.
-- **Um manifesto por serviço em `apps/`**, cada arquivo (`ai-assistant.yaml`, `ai-validation.yaml`, `api-auth.yaml`, `api-core.yaml`, `api-mcp.yaml`, `api-messenger.yaml`, `api-recommendation.yaml`, `web-app.yaml`) declara uma `Application` independente, com `source.repoURL` apontando para este próprio repositório (`infra-gitops`), `targetRevision: main` e `source.path` apontando para `services/<nome-do-serviço>`. Diferente do que se poderia supor por convenção de outras organizações, o código-fonte de cada serviço vive em repositórios separados, mas os manifestos Kubernetes de todos eles ficam centralizados aqui, e não distribuídos em cada repositório de serviço.
+- **Um manifesto por serviço em `apps/`**, cada arquivo (`ai-assistant.yaml`, `ai-validation.yaml`, `api-auth.yaml`, `api-core.yaml`, `api-mcp.yaml`, `api-messenger.yaml`, `api-recommendation.yaml`, `feeddb.yaml`, `web-app.yaml`) declara uma `Application` independente, com `source.repoURL` apontando para este próprio repositório (`infra-gitops`), `targetRevision: main` e `source.path` apontando para `services/<nome-do-serviço>`. Diferente do que se poderia supor por convenção de outras organizações, o código-fonte de cada serviço vive em repositórios separados, mas os manifestos Kubernetes de todos eles ficam centralizados aqui, e não distribuídos em cada repositório de serviço.
 - **`destination`** de cada `Application` de serviço aponta para `https://kubernetes.default.svc` (o próprio cluster onde o ArgoCD roda) no namespace `default`; a `root-app` é a exceção, sincronizada no namespace `argocd`.
 - **`syncPolicy.automated`** com `prune: true` e `selfHeal: true` em toda `Application`, então qualquer divergência entre `services/<app>` e o estado real do cluster é corrigida automaticamente pelo ArgoCD, e recursos removidos do manifesto são removidos do cluster também — não há sync manual no fluxo normal.
 - **Pasta `services/`**, contém, para cada serviço, o `Deployment` (imagem `docker.io/solarianetwork/<serviço>:latest`, probes, `envFrom` referenciando um `Secret` gerenciado fora deste repositório, requests/limits de CPU e memória), o `Service` (`ClusterIP`, expõe a porta interna do container) e, quando o serviço precisa ser acessível externamente, um `Ingress` (`ingressClassName: kong`, host no padrão `<serviço>.34.70.130.195.sslip.io`). Serviços internos, como `api-mcp`, não possuem `Ingress`.
+- **`feeddb` é a exceção stateful**, em vez de `Deployment`, a pasta `services/feeddb/` declara um `StatefulSet` do Neo4j Community (banco `feeddb`, PVC de 5Gi, `Service` `ClusterIP` só com a porta Bolt `7687`, sem `Ingress`), mais o job de `database-bootstrap`. O grafo é uma projeção descartável do PostgreSQL do `api-core`: um `Job` com hook `PostSync` o reconstrói depois de cada sync em que o Neo4j fica saudável (`BeforeHookCreation` recria o `Job` a cada sync), e um `CronJob` diário (`concurrencyPolicy: Forbid`) o reconstrói periodicamente. Os dois usam a mesma imagem, fixada pelo sha do commit, e o `Secret` `database-bootstrap-secrets` criado pelo `infra-platform`. O `Secret` do Neo4j (`feeddb-secrets`) também vem de lá.
 
 ```Tree do Repositório
 ├── .github/
@@ -27,6 +28,7 @@ Este repositório segue o padrão **app-of-apps** do ArgoCD: uma única `Applica
 │   ├── api-mcp.yaml
 │   ├── api-messenger.yaml
 │   ├── api-recommendation.yaml
+│   ├── feeddb.yaml
 │   └── web-app.yaml
 ├── bootstrap/
 │   └── root-app.yaml
@@ -58,6 +60,11 @@ Este repositório segue o padrão **app-of-apps** do ArgoCD: uma única `Applica
 │   │   ├── deployment.yaml
 │   │   ├── ingress.yaml
 │   │   └── service.yaml
+│   ├── feeddb/
+│   │   ├── bootstrap-cronjob.yaml
+│   │   ├── bootstrap-job.yaml
+│   │   ├── service.yaml
+│   │   └── statefulset.yaml
 │   └── web-app/
 │       ├── deployment.yaml
 │       ├── ingress.yaml
