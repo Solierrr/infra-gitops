@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: database-bootstrap
+  labels:
+    app: database-bootstrap
+spec:
+  schedule: "0 6 * * *"
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      ttlSecondsAfterFinished: 86400
+      template:
+        metadata:
+          labels:
+            app: database-bootstrap
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: database-bootstrap
+              image: docker.io/solarianetwork/database-bootstrap:REPLACE_WITH_RELEASE_SHA
+              envFrom:
+                - secretRef:
+                    name: database-bootstrap-secrets
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+                limits:
+                  cpu: 500m
+                  memory: 512Mi

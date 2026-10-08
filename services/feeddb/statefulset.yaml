@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: feeddb
+  labels:
+    app: feeddb
+spec:
+  serviceName: feeddb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feeddb
+  template:
+    metadata:
+      labels:
+        app: feeddb
+    spec:
+      securityContext:
+        runAsUser: 7474
+        runAsGroup: 7474
+        fsGroup: 7474
+      containers:
+        - name: neo4j
+          image: docker.io/library/neo4j:5.26.31-community
+          ports:
+            - name: bolt
+              containerPort: 7687
+          env:
+            - name: NEO4J_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: feeddb-secrets
+                  key: NEO4J_AUTH
+            - name: NEO4J_initial_dbms_default__database
+              value: feeddb
+            - name: NEO4J_server_memory_heap_initial__size
+              value: 512m
+            - name: NEO4J_server_memory_heap_max__size
+              value: 512m
+            - name: NEO4J_server_memory_pagecache_size
+              value: 256m
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+            limits:
+              cpu: "1"
+              memory: 1536Mi
+          startupProbe:
+            tcpSocket:
+              port: 7687
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            tcpSocket:
+              port: 7687
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 7687
+            periodSeconds: 20
+            failureThreshold: 6
+          volumeMounts:
+            - name: data
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
