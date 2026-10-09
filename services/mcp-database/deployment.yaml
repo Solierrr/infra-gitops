@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-mcp
+  name: mcp-database
   labels:
-    app: api-mcp
+    app: mcp-database
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: api-mcp
+      app: mcp-database
   template:
     metadata:
       labels:
-        app: api-mcp
+        app: mcp-database
     spec:
       containers:
-        - name: api-mcp
-          image: docker.io/solarianetwork/api-mcp:latest
+        - name: mcp-database
+          image: docker.io/solarianetwork/mcp-database:latest
           ports:
             - containerPort: 8001
           envFrom:
             - secretRef:
-                name: api-mcp-secrets
+                name: mcp-database-secrets
           resources:
             requests:
               cpu: 100m
