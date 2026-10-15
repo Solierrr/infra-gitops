@@ -51,6 +51,28 @@ kubectl apply --dry-run=client -f services/api-core/ingress.yaml
 argocd app diff api-core
 ```
 
+### Cluster local para testar as Applications
+
+<p>
+  <a href="https://github.com/syvixor/skills-icons">
+    <img src="https://skills.syvixor.com/api/icons?i=kubernetes,argocd,docker" height="48" alt="Cluster local">
+  </a>
+</p>
+
+Para testar as `Application` sem tocar no cluster GKE, o `Makefile` sobe um cluster Kubernetes local (k3d) com o Argo CD. Os alvos chamam `scripts/cluster.sh` e precisam de Docker e `kubectl`; os segredos vêm do Infisical (`infisical login`). Rode pelo Git Bash no Windows.
+
+```Comandos do cluster local
+make cluster-up                            # cria o cluster k3d "local" e instala o Argo CD
+make cluster-apps APPS="api-core"          # aplica a Application de apps/api-core.yaml (APPS=root aplica o app of apps)
+make cluster-secrets SERVICES="api-core"   # cria o secret api-core-secrets a partir do Infisical (SECRETS_ENV=qa por padrão)
+make cluster-status                        # mostra as Applications do cluster local
+make cluster-password                      # imprime a senha do admin do Argo CD
+make cluster-ui                            # abre o Argo CD em https://localhost:8085 (usuário admin)
+make cluster-down                          # apaga o cluster
+```
+
+O cluster usa um kubeconfig próprio e o contexto `k3d-local`: o contexto padrão do `kubectl` (por exemplo o do GKE) nunca é usado nem alterado. O Argo CD local sincroniza a `main` deste repositório no GitHub, e não o que está no seu disco; `cluster-apps` aplica os arquivos de `apps/` e `bootstrap/` do seu disco.
+
 ### Adicionando um novo serviço
 
 <p>
