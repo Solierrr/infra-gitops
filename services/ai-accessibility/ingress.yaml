@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ai-accessibility
+spec:
+  ingressClassName: kong
+  rules:
+    - host: ai-accessibility.solarianetwork.site
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ai-accessibility
+                port:
+                  number: 8080
