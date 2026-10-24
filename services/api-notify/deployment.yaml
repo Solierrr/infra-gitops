@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-notify
+  labels:
+    app: api-notify
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-notify
+  template:
+    metadata:
+      labels:
+        app: api-notify
+    spec:
+      containers:
+        - name: api-notify
+          image: docker.io/solarianetwork/api-notify:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: api-notify-secrets
+          env:
+            - name: JWT_JWK_SET_URI
+              value: http://api-auth:8081/.well-known/jwks.json
+          resources:
+            requests:
+              cpu: 200m
+              memory: 384Mi
+            limits:
+              cpu: 500m
+              memory: 768Mi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 20
