@@ -14,6 +14,7 @@ spec:
       labels:
         app: ai-operational
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: ai-operational
           image: docker.io/solarianetwork/ai-operational:latest
@@ -37,9 +38,11 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+              ephemeral-storage: 128Mi
             limits:
               cpu: 500m
               memory: 512Mi
+              ephemeral-storage: 512Mi
           readinessProbe:
             httpGet:
               path: /health

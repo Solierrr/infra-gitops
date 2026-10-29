@@ -16,6 +16,7 @@ spec:
       labels:
         app: infra-broker
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: infra-broker
           image: docker.io/solarianetwork/infra-broker:0.3.0
@@ -33,9 +34,11 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+              ephemeral-storage: 128Mi
             limits:
               cpu: 500m
               memory: 512Mi
+              ephemeral-storage: 512Mi
           readinessProbe:
             tcpSocket:
               port: 61613

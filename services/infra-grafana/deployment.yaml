@@ -16,6 +16,7 @@ spec:
       labels:
         app: infra-grafana
     spec:
+      automountServiceAccountToken: false
       securityContext:
         runAsUser: 472
         runAsGroup: 472
@@ -61,9 +62,11 @@ spec:
             requests:
               cpu: 100m
               memory: 192Mi
+              ephemeral-storage: 128Mi
             limits:
               cpu: 500m
               memory: 512Mi
+              ephemeral-storage: 512Mi
           readinessProbe:
             httpGet:
               path: /api/health
