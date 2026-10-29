@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-email
+  labels:
+    app: api-email
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-email
+  template:
+    metadata:
+      labels:
+        app: api-email
+    spec:
+      containers:
+        - name: api-email
+          image: docker.io/solarianetwork/api-email:latest
+          ports:
+            - containerPort: 8083
+          envFrom:
+            - secretRef:
+                name: api-email-secrets
+          env:
+            - name: APP_ENV
+              value: prod
+            - name: EMAIL_TRANSPORT
+              value: brevo
+            - name: EMAIL_ALLOWED_ORIGINS
+              value: https://solarianetwork.site
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8083
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8083
+            initialDelaySeconds: 10
+            periodSeconds: 20
