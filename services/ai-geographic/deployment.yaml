@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-geographic
+  labels:
+    app: ai-geographic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-geographic
+  template:
+    metadata:
+      labels:
+        app: ai-geographic
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: ai-geographic
+          image: docker.io/solarianetwork/ai-geographic:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: ai-geographic-secrets
+          env:
+            - name: ENVIRONMENT
+              value: PROD
+            - name: CORS_ALLOWED_ORIGINS
+              value: https://solarianetwork.site
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+              ephemeral-storage: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+              ephemeral-storage: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 20

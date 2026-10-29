@@ -25,6 +25,8 @@ spec:
           env:
             - name: JWT_JWK_SET_URI
               value: http://api-auth:8081/.well-known/jwks.json
+            - name: RABBITMQ_HOST
+              value: infra-broker
           resources:
             requests:
               cpu: 200m

@@ -25,6 +25,8 @@ spec:
           env:
             - name: JWT_JWK_SET_URI
               value: http://api-auth:8081/.well-known/jwks.json
+            - name: API_EMAIL_URL
+              value: http://api-email:8083
           resources:
             requests:
               cpu: 200m

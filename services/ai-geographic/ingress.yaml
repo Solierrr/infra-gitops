@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ai-geographic
+spec:
+  ingressClassName: kong
+  rules:
+    - host: ai-geographic.solarianetwork.site
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ai-geographic
+                port:
+                  number: 8000

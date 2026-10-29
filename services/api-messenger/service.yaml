@@ -4,6 +4,10 @@ metadata:
   name: api-messenger
   labels:
     app: api-messenger
+  annotations:
+    konghq.com/connect-timeout: "10000"
+    konghq.com/read-timeout: "300000"
+    konghq.com/write-timeout: "300000"
 spec:
   type: ClusterIP
   selector:

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ai-operational
+spec:
+  ingressClassName: kong
+  rules:
+    - host: ai-operational.solarianetwork.site
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ai-operational
+                port:
+                  number: 8000
