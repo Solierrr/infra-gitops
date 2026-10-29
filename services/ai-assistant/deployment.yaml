@@ -22,6 +22,13 @@ spec:
           envFrom:
             - secretRef:
                 name: ai-assistant-secrets
+          env:
+            - name: MCP_URL
+              value: http://mcp-database:8001/mcp
+            - name: A2A_PUBLIC_URL
+              value: http://ai-assistant:8000
+            - name: A2A_OPERATIONAL_URL
+              value: http://ai-operational:8000
           resources:
             requests:
               cpu: 100m
