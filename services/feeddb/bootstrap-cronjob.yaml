@@ -23,7 +23,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: database-bootstrap
-              image: docker.io/solarianetwork/database-bootstrap:eb3e9c4264545ed94f6b10ba53b8779306db9fc4
+              image: docker.io/solarianetwork/database-bootstrap:0d39bf8635a6f0cb6ca9ac16e638300528bd77b4
               envFrom:
                 - secretRef:
                     name: database-bootstrap-secrets
