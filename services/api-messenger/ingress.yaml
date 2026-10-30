@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-    - host: api-messenger.solarianetwork.site
+    - host: messenger.solarianetwork.site
       http:
         paths:
           - path: /
