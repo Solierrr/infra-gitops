@@ -32,9 +32,10 @@ spec:
             - name: JWT_KEYSTORE_PATH
               value: /etc/secrets/jwt/keystore.p12
           volumeMounts:
+            # O entrypoint decodifica JWT_KEYSTORE_BASE64 para JWT_KEYSTORE_PATH, entao o
+            # diretorio precisa ser gravavel (um volume de Secret e somente leitura).
             - name: jwt-keystore
               mountPath: /etc/secrets/jwt
-              readOnly: true
           resources:
             requests:
               cpu: 200m
@@ -54,5 +55,4 @@ spec:
             periodSeconds: 20
       volumes:
         - name: jwt-keystore
-          secret:
-            secretName: api-auth-jwt-keystore
+          emptyDir: {}
