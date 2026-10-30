@@ -6,6 +6,8 @@ metadata:
     app: api-core
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: api-core
@@ -25,7 +27,7 @@ spec:
           env:
             # O Postgres da Aiven tem poucas conexoes; o pool padrao do Hikari (10) estoura o limite
             - name: SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE
-              value: "4"
+              value: "2"
             - name: SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE
               value: "1"
             - name: JWT_JWK_SET_URI
