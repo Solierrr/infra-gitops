@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-    - host: ai-geographic.solarianetwork.site
+    - host: geographic.solarianetwork.site
       http:
         paths:
           - path: /

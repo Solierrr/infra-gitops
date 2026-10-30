@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: kong
   rules:
-    - host: ai-assistant.solarianetwork.site
+    - host: assistant.solarianetwork.site
       http:
         paths:
           - path: /
