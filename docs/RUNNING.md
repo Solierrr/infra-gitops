@@ -63,7 +63,7 @@ Para testar as `Application` sem tocar no cluster GKE, o `Makefile` sobe um clus
 
 ```Comandos do cluster local
 make cluster-up                            # cria o cluster k3d "local" e instala o Argo CD
-make cluster-apps APPS="api-core"          # aplica a Application de apps/api-core.yaml (APPS=root aplica o app of apps)
+make cluster-apps APPS="api-core"          # aplica a Application api-core (apps/api/api-core.yaml) (APPS=root aplica o app of apps)
 make cluster-secrets SERVICES="api-core"   # cria o secret api-core-secrets a partir do Infisical (SECRETS_ENV=qa por padrão)
 make cluster-status                        # mostra as Applications do cluster local
 make cluster-password                      # imprime a senha do admin do Argo CD

@@ -120,7 +120,9 @@ cmd_apps() {
     if [ "$name" = "root" ]; then
       path="bootstrap/root-app.yaml"
     else
-      path="apps/$name.yaml"
+      path=$(find "$ROOT/apps" -name "$name.yaml" -print -quit)
+      [ -n "$path" ] || die "Application $name nao encontrada em apps/"
+      path=${path#"$ROOT"/}
     fi
     info "aplicando a Application $name"
     kc apply -n argocd -f "$(native "$ROOT/$path")"
