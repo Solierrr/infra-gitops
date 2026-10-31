@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.1.0](https://github.com/Solierrr/infra-gitops/compare/v1.0.0...v1.1.0) (2026-10-31)
+
+
+### Features
+
+* add api-notify manifests ([#34](https://github.com/Solierrr/infra-gitops/issues/34)) ([a99a0ec](https://github.com/Solierrr/infra-gitops/commit/a99a0eccac797de86b150e234e86ef13d081dd10))
+* add manifests for the new services and the broker relay ([#37](https://github.com/Solierrr/infra-gitops/issues/37)) ([0dbf0b6](https://github.com/Solierrr/infra-gitops/commit/0dbf0b68e4b01fc2e8955a125158604178ed1769))
+* connect grafana to grafana cloud and install the dashboards from their own repository ([#50](https://github.com/Solierrr/infra-gitops/issues/50)) ([8fe0d55](https://github.com/Solierrr/infra-gitops/commit/8fe0d550df0a9e9eabd37fd861188ae19da18883))
+* deploy the otel collector from its own repository ([#47](https://github.com/Solierrr/infra-gitops/issues/47)) ([1c9fe94](https://github.com/Solierrr/infra-gitops/commit/1c9fe940643d31ed168eba46cbd3bfd7df8ee55c))
+* disable the grafana login form ([#54](https://github.com/Solierrr/infra-gitops/issues/54)) ([80f9c36](https://github.com/Solierrr/infra-gitops/commit/80f9c362d431bfeb0c86576d5065890fafd73e94))
+* sign in to grafana through cloudflare access ([#46](https://github.com/Solierrr/infra-gitops/issues/46)) ([23a2d92](https://github.com/Solierrr/infra-gitops/commit/23a2d92a8eb56366272f36b164d0686ecd707c30))
+
+
+### Bug Fixes
+
+* add a startup probe to the java services ([#39](https://github.com/Solierrr/infra-gitops/issues/39)) ([2c4e06d](https://github.com/Solierrr/infra-gitops/commit/2c4e06dd04e5d1e647bd07a47c99eadff76a0230))
+* connect the api-auth redis with tls ([#48](https://github.com/Solierrr/infra-gitops/issues/48)) ([0953369](https://github.com/Solierrr/infra-gitops/commit/09533694a2c040c2b77c48c53695c2dbb12f4bc2))
+* issue the web-app and grafana certificates with dns validation ([#49](https://github.com/Solierrr/infra-gitops/issues/49)) ([841fe27](https://github.com/Solierrr/infra-gitops/commit/841fe27b2e0aa334abece5edb66a411e91b980b6))
+* let the api-auth entrypoint write the jwt keystore ([#38](https://github.com/Solierrr/infra-gitops/issues/38)) ([74ea692](https://github.com/Solierrr/infra-gitops/commit/74ea6923a7566bbce930cc09913dbefe09dc66ab))
+* limit the postgres connection pool of the core services ([#41](https://github.com/Solierrr/infra-gitops/issues/41)) ([0b9ac83](https://github.com/Solierrr/infra-gitops/commit/0b9ac83e9503d0d8029e5cc43ae511fb49537891))
+* pin the web-app image to the build with the spa fallback ([#55](https://github.com/Solierrr/infra-gitops/issues/55)) ([ffa21a4](https://github.com/Solierrr/infra-gitops/commit/ffa21a4cd948a75db1f4397dbcdf1081a0a5b246))
+* replace the old grafana data sources that clash on uid ([#51](https://github.com/Solierrr/infra-gitops/issues/51)) ([78323b7](https://github.com/Solierrr/infra-gitops/commit/78323b7e500bd6c679fc1d7fbf942536e6cf4a06))
+* take the grafana role rule from the secret ([#53](https://github.com/Solierrr/infra-gitops/issues/53)) ([a3ae22e](https://github.com/Solierrr/infra-gitops/commit/a3ae22e64bef19336b118d7fb5979159e91aeb62))
+* update the database-bootstrap image to the brand catalog fix ([#40](https://github.com/Solierrr/infra-gitops/issues/40)) ([87decf8](https://github.com/Solierrr/infra-gitops/commit/87decf8bf07ebcd31715301b16ac74b6d6b0c97a))
+* update the database-bootstrap image to the renamed schema build ([#56](https://github.com/Solierrr/infra-gitops/issues/56)) ([935585a](https://github.com/Solierrr/infra-gitops/commit/935585aadce20c612664316794197bfd9c7710b6))
+* use the new health paths in the api-recommendation probes ([#45](https://github.com/Solierrr/infra-gitops/issues/45)) ([2f053a2](https://github.com/Solierrr/infra-gitops/commit/2f053a24696dbe44df82789fde6284a9fd47a644))
+
 ## 1.0.0 (2026-10-15)
 
 
