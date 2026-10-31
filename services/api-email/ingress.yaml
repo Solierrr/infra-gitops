@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-email
+spec:
+  ingressClassName: kong
+  rules:
+    - host: email.solarianetwork.site
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-email
+                port:
+                  number: 8083

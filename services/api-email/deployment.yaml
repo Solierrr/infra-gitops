@@ -29,7 +29,7 @@ spec:
             - name: EMAIL_TRANSPORT
               value: brevo
             - name: EMAIL_ALLOWED_ORIGINS
-              value: https://solarianetwork.site
+              value: https://solarianetwork.site,https://grafana.solarianetwork.site
           resources:
             requests:
               cpu: 50m
