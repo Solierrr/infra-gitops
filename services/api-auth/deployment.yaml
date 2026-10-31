@@ -34,6 +34,10 @@ spec:
             # do pod, quebrando a chamada api-auth -> api-core em prod.
             - name: PERSISTENCE_BASE_URL
               value: http://api-core:8080
+            # O Upstash só aceita conexão com TLS; a URL do Redis é redis:// e o
+            # serviço falhava ao iniciar com "Connection closed prematurely".
+            - name: SPRING_DATA_REDIS_SSL_ENABLED
+              value: "true"
             - name: JWT_KEYSTORE_PATH
               value: /etc/secrets/jwt/keystore.p12
           volumeMounts:
