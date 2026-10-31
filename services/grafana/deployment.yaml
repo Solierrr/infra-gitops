@@ -36,6 +36,29 @@ spec:
               value: "false"
             - name: GF_AUTH_ANONYMOUS_ENABLED
               value: "false"
+            # Login único: o Cloudflare Access manda o token de quem já passou pelo
+            # login do Google em Cf-Access-Jwt-Assertion e o Grafana o valida pelas
+            # chaves públicas do Access. Só os e-mails autorizados chegam até aqui.
+            - name: GF_AUTH_JWT_ENABLED
+              value: "true"
+            - name: GF_AUTH_JWT_HEADER_NAME
+              value: Cf-Access-Jwt-Assertion
+            - name: GF_AUTH_JWT_EMAIL_CLAIM
+              value: email
+            - name: GF_AUTH_JWT_USERNAME_CLAIM
+              value: email
+            - name: GF_AUTH_JWT_JWK_SET_URL
+              value: https://long-hat-66b3.cloudflareaccess.com/cdn-cgi/access/certs
+            - name: GF_AUTH_JWT_CACHE_TTL
+              value: 60m
+            - name: GF_AUTH_JWT_EXPECT_CLAIMS
+              value: '{"iss":"https://long-hat-66b3.cloudflareaccess.com"}'
+            - name: GF_AUTH_JWT_AUTO_SIGN_UP
+              value: "true"
+            - name: GF_AUTH_JWT_ROLE_ATTRIBUTE_PATH
+              value: "'Admin'"
+            - name: GF_AUTH_JWT_ALLOW_ASSIGN_GRAFANA_ADMIN
+              value: "true"
             - name: GF_ANALYTICS_REPORTING_ENABLED
               value: "false"
             - name: GF_ANALYTICS_CHECK_FOR_UPDATES
