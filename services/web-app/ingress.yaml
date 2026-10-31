@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: web-app
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod-http01
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: kong
   tls:
