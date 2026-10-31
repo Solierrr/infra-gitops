@@ -69,17 +69,11 @@ spec:
             - name: datasources
               mountPath: /etc/grafana/provisioning/datasources
               readOnly: true
-            - name: dashboards
-              mountPath: /etc/grafana/provisioning/dashboards/solaria.yaml
-              subPath: solaria.yaml
+            - name: dashboard-provider
+              mountPath: /etc/grafana/provisioning/dashboards
               readOnly: true
             - name: dashboards
-              mountPath: /var/lib/solaria/dashboards/overview.json
-              subPath: overview.json
-              readOnly: true
-            - name: dashboards
-              mountPath: /var/lib/solaria/dashboards/service.json
-              subPath: service.json
+              mountPath: /etc/dashboards
               readOnly: true
           resources:
             requests:
@@ -109,6 +103,10 @@ spec:
         - name: datasources
           configMap:
             name: infra-grafana-datasources
+        # os dois ConfigMaps abaixo vêm do repositório infra-otel-collector (diretório grafana)
+        - name: dashboard-provider
+          configMap:
+            name: grafana-dashboard-provider
         - name: dashboards
           configMap:
-            name: infra-grafana-dashboards
+            name: grafana-dashboards
