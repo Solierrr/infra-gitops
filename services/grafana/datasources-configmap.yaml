@@ -5,28 +5,43 @@ metadata:
   labels:
     app: infra-grafana
 data:
+  # As fontes de dados são as do Grafana Cloud, onde o coletor entrega a telemetria.
+  # URL, usuário e token vêm do Secret infra-grafana-secrets (variáveis de ambiente),
+  # então nada sensível fica neste arquivo.
   datasources.yaml: |
     apiVersion: 1
 
     datasources:
-      - name: Prometheus
+      - name: prometheus
         uid: prometheus
         type: prometheus
         access: proxy
-        url: http://prometheus:9090
+        url: ${GRAFANA_CLOUD_PROMETHEUS_URL}
+        basicAuth: true
+        basicAuthUser: ${GRAFANA_CLOUD_PROMETHEUS_USER}
+        secureJsonData:
+          basicAuthPassword: ${GRAFANA_CLOUD_READ_TOKEN}
         isDefault: true
         editable: false
-      - name: Loki
+      - name: loki
         uid: loki
         type: loki
         access: proxy
-        url: http://loki:3100
+        url: ${GRAFANA_CLOUD_LOKI_URL}
+        basicAuth: true
+        basicAuthUser: ${GRAFANA_CLOUD_LOKI_USER}
+        secureJsonData:
+          basicAuthPassword: ${GRAFANA_CLOUD_READ_TOKEN}
         editable: false
-      - name: Tempo
+      - name: tempo
         uid: tempo
         type: tempo
         access: proxy
-        url: http://tempo:3200
+        url: ${GRAFANA_CLOUD_TEMPO_URL}
+        basicAuth: true
+        basicAuthUser: ${GRAFANA_CLOUD_TEMPO_USER}
+        secureJsonData:
+          basicAuthPassword: ${GRAFANA_CLOUD_READ_TOKEN}
         editable: false
         jsonData:
           tracesToLogsV2:

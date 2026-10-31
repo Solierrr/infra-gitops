@@ -5,10 +5,14 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://github.com/Solierrr/infra-gitops.git
-    targetRevision: main
-    path: services/grafana
+  sources:
+    - repoURL: https://github.com/Solierrr/infra-gitops.git
+      targetRevision: main
+      path: services/grafana
+    # dashboards e provider: um único dono, o repositório de observabilidade
+    - repoURL: https://github.com/Solierrr/infra-otel-collector.git
+      targetRevision: main
+      path: grafana
   destination:
     server: https://kubernetes.default.svc
     namespace: default
