@@ -11,16 +11,6 @@ data:
   datasources.yaml: |
     apiVersion: 1
 
-    # Migração única: remove as fontes de dados antigas (nomes com maiúscula, gravadas no
-    # volume) para criar as novas com o mesmo uid. Pode sair depois do primeiro sync.
-    deleteDatasources:
-      - name: Prometheus
-        orgId: 1
-      - name: Loki
-        orgId: 1
-      - name: Tempo
-        orgId: 1
-
     datasources:
       - name: prometheus
         uid: prometheus
