@@ -55,8 +55,8 @@ spec:
               value: '{"iss":"https://long-hat-66b3.cloudflareaccess.com"}'
             - name: GF_AUTH_JWT_AUTO_SIGN_UP
               value: "true"
-            - name: GF_AUTH_JWT_ROLE_ATTRIBUTE_PATH
-              value: "'Admin'"
+            # GF_AUTH_JWT_ROLE_ATTRIBUTE_PATH (papel Admin ou Viewer por e-mail) vem do
+            # Secret infra-grafana-secrets, para a lista de e-mails não ir a este repositório público
             - name: GF_AUTH_JWT_ALLOW_ASSIGN_GRAFANA_ADMIN
               value: "true"
             - name: GF_ANALYTICS_REPORTING_ENABLED
