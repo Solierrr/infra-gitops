@@ -39,6 +39,10 @@ spec:
             # Login único: o Cloudflare Access manda o token de quem já passou pelo
             # login do Google em Cf-Access-Jwt-Assertion e o Grafana o valida pelas
             # chaves públicas do Access. Só os e-mails autorizados chegam até aqui.
+            # Só o SSO: sem o formulário de usuário e senha. A API com a senha do administrador
+            # continua valendo, mas só por dentro do cluster (kubectl port-forward).
+            - name: GF_AUTH_DISABLE_LOGIN_FORM
+              value: "true"
             - name: GF_AUTH_JWT_ENABLED
               value: "true"
             - name: GF_AUTH_JWT_HEADER_NAME
