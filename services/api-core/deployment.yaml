@@ -23,6 +23,8 @@ spec:
             - secretRef:
                 name: api-core-secrets
           env:
+            - name: CORS_ALLOWED_ORIGINS
+              value: https://solarianetwork.site
             # O Postgres da Aiven tem poucas conexoes; o pool padrao do Hikari (10) estoura o limite
             - name: SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE
               value: "4"
