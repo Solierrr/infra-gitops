@@ -1,0 +1,11 @@
+<p align="center">
+  <img src="../assets/readme/banners/argocd.png" alt="Argo CD" width="100%">
+</p>
+
+# Visão de produto
+
+O repositório reúne a configuração dos componentes que atendem a plataforma no cluster. Ele permite revisar uma mudança antes da publicação, conhecer o estado desejado e recuperar uma configuração anterior pelo histórico.
+
+Uma alteração aprovada pode iniciar uma atualização automática do ambiente, e os recursos removidos da configuração podem ser removidos do cluster, enquanto as alterações feitas diretamente no ambiente podem ser desfeitas pela sincronização.
+
+O cluster de produção é efêmero e pode ser desligado, e enquanto ele está fora o `worker-failover` responde no lugar das aplicações.

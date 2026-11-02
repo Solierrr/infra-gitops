@@ -1,47 +1,37 @@
-# GitOps
+<p align="center">
+  <img src="./assets/readme/banners/argocd.png" alt="Argo CD" width="100%">
+</p>
 
-Repositório responsável pela lógica de GitOps central do projeto, centralizando os manifestos Kubernetes de cada serviço e as `Application` do [ArgoCD](https://argo-cd.readthedocs.io/) que os sincronizam com o cluster GKE. Deployments, Services, Ingress e as próprias `Application` do ArgoCD são declaradas como YAML versionado e o ArgoCD assume a responsabilidade de manter o cluster convergido com o que está em `main`. O repositório segue o padrão **app-of-apps** onde uma única `Application` raiz (`bootstrap/root-app.yaml`) observa a pasta `apps/`, e cada arquivo `.yaml` encontrado vira automaticamente uma nova `Application`, sem passos manuais adicionais além de adicionar o arquivo.
+<p align="center">
+  <img src="./assets/readme/stacks/kubernetes.png" width="100" hspace="8" alt="Kubernetes" title="Kubernetes">
+  <img src="./assets/readme/stacks/gke.png" width="100" hspace="8" alt="GKE" title="GKE">
+  <img src="./assets/readme/stacks/github-actions.png" width="100" hspace="8" alt="GitHub Actions" title="GitHub Actions">
+</p>
 
-<p>
+# Estado desejado do cluster
 
 [![License](https://img.shields.io/github/license/Solierrr/infra-gitops)](https://github.com/Solierrr/infra-gitops/blob/main/LICENSE)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/Solierrr/infra-gitops)](https://github.com/Solierrr/infra-gitops/commits)
-[![GitHub Issues](https://img.shields.io/github/issues/Solierrr/infra-gitops)](https://github.com/Solierrr/infra-gitops/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Solierrr/infra-gitops)](https://github.com/Solierrr/infra-gitops/pulls)
-[![GitHub Contributors](https://img.shields.io/github/contributors/Solierrr/infra-gitops)](https://github.com/Solierrr/infra-gitops/graphs/contributors)
 [![Release](https://img.shields.io/github/v/release/Solierrr/infra-gitops)](https://github.com/Solierrr/infra-gitops/releases)
 
-</p>
+Este repositório descreve quais componentes devem funcionar no ambiente de produção e como eles são executados. A equipe revisa alterações antes da publicação, e o histórico permite identificar a configuração desejada em cada momento. Ele reúne aplicações de negócio, agentes, mensageria, observabilidade e o banco usado nas recomendações.
 
-<div align="center">
-
-<p>
-  <a href="https://github.com/syvixor/skills-icons">
-    <img src="https://skills.syvixor.com/api/icons?i=argocd,kubernetes,gcp,githubactions" height="48" alt="GitOps & Infrastructure">
-  </a>
-</p>
-
-<p>
-
-[![Argo CD](https://img.shields.io/badge/Argo_CD-EF7B4D?logo=argo&logoColor=white)](https://argo-cd.readthedocs.io/)
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white)](https://kubernetes.io/)
-[![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?logo=googlecloud&logoColor=white)](https://cloud.google.com/)
-[![Kong](https://img.shields.io/badge/Kong-003459?logo=kong&logoColor=white)](https://konghq.com/)
-
-</p>
-
-</div>
-
-Cada `Application` sob `apps/` (por exemplo `api-core.yaml`, `api-auth.yaml`, `web-app.yaml`) referencia um caminho da pasta `services/` deste mesmo repositório, onde ficam o `Deployment`, o `Service` e (quando exposto externamente) o `Ingress` daquele serviço. O ArgoCD sincroniza automaticamente qualquer divergência entre o que está em `services/<app>` e o estado real do cluster, com `prune` e `selfHeal` habilitados — ou seja, um merge em `main` já é o deploy.
+O Argo CD acompanha os arquivos versionados e aplica as mudanças no Kubernetes. Uma aplicação raiz descobre as aplicações filhas, que apontam para os recursos de cada serviço. As credenciais são referenciadas por segredos do cluster. O repositório também oferece uma forma de conferir a sincronização em um cluster local.
 
 ## Aprofunde-se no Projeto!
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md), estrutura de pastas e o padrão app-of-apps em detalhe.
-- [RUNNING.md](./RUNNING.md), como validar um manifesto localmente antes de abrir Pull Request.
-- [DEPLOYMENT.md]({a confirmar}), pipeline de deploy da organização (ver [docs-warehouse/.github/DEPLOYMENT.md](https://github.com/Solierrr/docs-warehouse/blob/main/.github/DEPLOYMENT.md)).
+- [OVERVIEW.md](./docs/OVERVIEW.md), finalidade e regras de produto.
+- [ARCHITECTURE.md](./docs/ARCHITECTURE.md), componentes, dados e integrações.
+- [RUNNING.md](./docs/RUNNING.md), preparação e execução local.
+- [DEPLOY.md](./docs/DEPLOY.md), ambientes e publicação.
+- [STATUS.md](./docs/STATUS.md), limites observados.
+- [HOW_IT_WORKS.md](./docs/HOW_IT_WORKS.md), detalhes do fluxo ou modelo de dados.
+- [Fluxos](./flows/), etapas e casos de erro do repositório.
+- [PENDENCIAS.md](./PENDENCIAS.md), questões para revisão.
 
 ## Contribuindo
 
-- [.github/CONTRIBUTING.md](./.github/CONTRIBUTING.md), convenções de commit, branch e Pull Request.
-- [CODE_OF_CONDUCT.md]({a confirmar}), código de conduta do projeto.
-- [SECURITY.md]({a confirmar}), como reportar vulnerabilidades de segurança.
+- [CONTRIBUTING.md](https://github.com/Solierrr/.github/blob/main/.github/CONTRIBUTING.md), convenções de contribuição.
+- [CODE_OF_CONDUCT.md](https://github.com/Solierrr/.github/blob/main/CODE_OF_CONDUCT.md), código de conduta.
+- [SECURITY.md](https://github.com/Solierrr/.github/blob/main/SECURITY.md), relato de vulnerabilidades.
