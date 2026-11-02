@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ai-accessibility
-          image: docker.io/solarianetwork/ai-accessibility:latest
+          image: docker.io/solarianetwork/ai-accessibility:0.3.0
           ports:
             - containerPort: 8080
           envFrom:
