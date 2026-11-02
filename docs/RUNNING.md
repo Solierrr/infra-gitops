@@ -1,90 +1,20 @@
-# Rodando o Projeto Localmente
-
-Este repositório é um repositório de manifestos GitOps (ArgoCD) — não tem código de aplicação nem "servidor de desenvolvimento". Testar uma mudança aqui significa validar o manifesto YAML e, se possível, conferir o diff contra o cluster antes do merge em `main` (o que dispara o sync automático do ArgoCD, com `prune` e `selfHeal` habilitados em toda `Application`).
-
-<p>
-  <a href="https://github.com/syvixor/skills-icons">
-    <img src="https://skills.syvixor.com/api/icons?i=argocd,kubernetes,github" height="48" alt="Rodando o Projeto — ArgoCD">
-  </a>
+<p align="center">
+  <img src="../assets/readme/banners/argocd.png" alt="Argo CD" width="100%">
 </p>
 
-## Possíveis Impedimentos
+# Validação local
 
-- **ArgoCD CLI instalado**, necessário para rodar `argocd app diff` contra o cluster antes de abrir a Pull Request.
-- **`kubectl` configurado com acesso ao cluster GKE**, sem isso não é possível validar o manifesto contra o estado real do cluster, só a sintaxe YAML.
-- **Cluster GKE em pé**, como o cluster é efêmero (ver [Infra-platform](https://github.com/Solierrr/infra-platform)), validar contra um cluster real só é possível quando ele está ativo.
-- **Mudanças aqui afetam produção diretamente**, ao contrário de um serviço rodando localmente, qualquer merge em `main` neste repositório é sincronizado automaticamente pelo ArgoCD — revise o diff com atenção antes de abrir a Pull Request, principalmente em `bootstrap/root-app.yaml`, já que ele controla a criação de todas as demais `Application`.
+Use `make`, `kubectl`, `kubeconform` e Docker para validar e executar o cluster local. O script usa k3d 5.8.3 e Argo CD 3.5.2 por padrão. Os guias comuns estão em [ARGOCD.md](https://github.com/Solierrr/docs-warehouse/blob/main/readme/running/ARGOCD.md) e [TRY-LOCAL.md](https://github.com/Solierrr/docs-warehouse/blob/main/helps/TRY-LOCAL.md).
 
-## Instalação do Projeto
+O `make lint` executa o kubeconform ignorando os schemas ausentes, e o CI usa o kubeconform 0.7.0 em container, enquanto `make test`, `make build` e `make dev` não têm comando próprio configurado.
 
-### Iniciando o repositório com o Github
+| Comando | Efeito |
+|---|---|
+| `make cluster-up` | Cria k3d e instala Argo CD |
+| `make cluster-apps APPS="api-core api-auth"` | Aplica Applications selecionadas |
+| `make cluster-secrets SERVICES="api-core"` | Exporta configuração autorizada do Infisical para o cluster local |
+| `make cluster-status` | Mostra Applications |
+| `make cluster-ui` | Abre port-forward em https://localhost:8085 |
+| `make cluster-down` | Remove o cluster local |
 
-<p>
-  <a href="https://github.com/syvixor/skills-icons">
-    <img src="https://skills.syvixor.com/api/icons?i=github,vscode" height="48" alt="Frameworks">
-  </a>
-</p>
-
-Clone o repositório e abra no VS Code (com a extensão YAML para validação de schema).
-
-```Comandos para clonar o repositório
-git clone https://github.com/Solierrr/infra-gitops.git
-cd ./infra-gitops
-code . -r
-```
-
-### Validando os manifestos
-
-<p>
-  <a href="https://github.com/syvixor/skills-icons">
-    <img src="https://skills.syvixor.com/api/icons?i=kubernetes,argocd" height="48" alt="Frameworks">
-  </a>
-</p>
-
-`kubectl apply --dry-run` valida a sintaxe e o schema do manifesto sem aplicar nada no cluster. `argocd app diff` mostra exatamente o que mudaria no cluster real, aplicação por aplicação — use o nome da `Application` (igual ao arquivo em `apps/`, sem a extensão), não o caminho do manifesto.
-
-```Comandos para validar os manifestos de um serviço existente
-kubectl apply --dry-run=client -f services/api-core/deployment.yaml
-kubectl apply --dry-run=client -f services/api-core/service.yaml
-kubectl apply --dry-run=client -f services/api-core/ingress.yaml
-
-argocd app diff api-core
-```
-
-### Cluster local para testar as Applications
-
-<p>
-  <a href="https://github.com/syvixor/skills-icons">
-    <img src="https://skills.syvixor.com/api/icons?i=kubernetes,argocd,docker" height="48" alt="Cluster local">
-  </a>
-</p>
-
-Para testar as `Application` sem tocar no cluster GKE, o `Makefile` sobe um cluster Kubernetes local (k3d) com o Argo CD. Os alvos chamam `scripts/cluster.sh` e precisam de Docker e `kubectl`; os segredos vêm do Infisical (`infisical login`). Rode pelo Git Bash no Windows.
-
-```Comandos do cluster local
-make cluster-up                            # cria o cluster k3d "local" e instala o Argo CD
-make cluster-apps APPS="api-core"          # aplica a Application api-core (apps/api/api-core.yaml) (APPS=root aplica o app of apps)
-make cluster-secrets SERVICES="api-core"   # cria o secret api-core-secrets a partir do Infisical (SECRETS_ENV=qa por padrão)
-make cluster-status                        # mostra as Applications do cluster local
-make cluster-password                      # imprime a senha do admin do Argo CD
-make cluster-ui                            # abre o Argo CD em https://localhost:8085 (usuário admin)
-make cluster-down                          # apaga o cluster
-```
-
-O cluster usa um kubeconfig próprio e o contexto `k3d-local`: o contexto padrão do `kubectl` (por exemplo o do GKE) nunca é usado nem alterado. O Argo CD local sincroniza a `main` deste repositório no GitHub, e não o que está no seu disco; `cluster-apps` aplica os arquivos de `apps/` e `bootstrap/` do seu disco.
-
-### Adicionando um novo serviço
-
-<p>
-  <a href="https://github.com/syvixor/skills-icons">
-    <img src="https://skills.syvixor.com/api/icons?i=kubernetes,argocd" height="48" alt="Frameworks">
-  </a>
-</p>
-
-Como o repositório segue o padrão app-of-apps (ver [ARCHITECTURE.md](./ARCHITECTURE.md)), um novo serviço exige apenas dois passos: criar a pasta `services/<novo-serviço>/` com `deployment.yaml` e `service.yaml` (e `ingress.yaml` se o serviço precisar ser exposto externamente), seguindo o padrão dos serviços já existentes, e criar `apps/<novo-serviço>.yaml` com a `Application` correspondente, apontando `source.path` para `services/<novo-serviço>`. Nenhuma mudança em `bootstrap/root-app.yaml` é necessária — a `root-app` já observa `apps/` recursivamente e cria a nova `Application` automaticamente após o merge em `main`.
-
-```Comandos para validar o novo manifesto antes do merge
-kubectl apply --dry-run=client -f apps/<novo-serviço>.yaml
-kubectl apply --dry-run=client -f services/<novo-serviço>/deployment.yaml
-kubectl apply --dry-run=client -f services/<novo-serviço>/service.yaml
-```
+O script usa um kubeconfig próprio e o contexto `k3d-local`, e como o `make vault` não tem pastas configuradas, os segredos locais vêm do `cluster-secrets`, com o `SECRETS_ENV` selecionando o ambiente. Sem acesso ao Infisical essa etapa falha.
