@@ -40,11 +40,17 @@ spec:
               value: "true"
             - name: JWT_KEYSTORE_PATH
               value: /etc/secrets/jwt/keystore.p12
+            # Credencial do Firebase Admin (ADC) para validar os ID tokens do login
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/secrets/firebase/credentials.json
           volumeMounts:
             # O entrypoint decodifica JWT_KEYSTORE_BASE64 para JWT_KEYSTORE_PATH, entao o
             # diretorio precisa ser gravavel (um volume de Secret e somente leitura).
             - name: jwt-keystore
               mountPath: /etc/secrets/jwt
+            - name: firebase-credentials
+              mountPath: /etc/secrets/firebase
+              readOnly: true
           resources:
             requests:
               cpu: 200m
@@ -70,3 +76,6 @@ spec:
       volumes:
         - name: jwt-keystore
           emptyDir: {}
+        - name: firebase-credentials
+          secret:
+            secretName: api-auth-firebase-credentials
