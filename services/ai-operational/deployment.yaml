@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: ai-operational
-          image: docker.io/solarianetwork/ai-operational:latest
+          image: docker.io/solarianetwork/ai-operational:0.2.0
           ports:
             - containerPort: 8000
           envFrom:
