@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-notify
-          image: docker.io/solarianetwork/api-notify:latest
+          image: docker.io/solarianetwork/api-notify:0.3.0
           ports:
             - containerPort: 8080
           envFrom:
