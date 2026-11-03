@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-messenger
-          image: docker.io/solarianetwork/api-messenger:latest
+          image: docker.io/solarianetwork/api-messenger:3.2.0
           ports:
             - containerPort: 8080
           envFrom:
