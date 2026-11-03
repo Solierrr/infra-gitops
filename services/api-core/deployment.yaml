@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-core
-          image: docker.io/solarianetwork/api-core:latest
+          image: docker.io/solarianetwork/api-core:3.1.0
           ports:
             - containerPort: 8080
           envFrom:
