@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-auth
-          image: docker.io/solarianetwork/api-auth:latest
+          image: docker.io/solarianetwork/api-auth:3.2.0
           ports:
             - containerPort: 8081
           envFrom:
