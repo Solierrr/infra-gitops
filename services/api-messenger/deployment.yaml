@@ -29,6 +29,14 @@ spec:
               value: http://api-auth:8081/.well-known/jwks.json
             - name: RABBITMQ_HOST
               value: infra-broker
+            - name: MEDIA_BUCKET
+              value: solier-messenger-media
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/run/secrets/media/key.json
+          volumeMounts:
+            - name: media-key
+              mountPath: /var/run/secrets/media
+              readOnly: true
           resources:
             requests:
               cpu: 200m
@@ -51,3 +59,8 @@ spec:
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 20
+      volumes:
+        - name: media-key
+          secret:
+            secretName: api-messenger-media-key
+            optional: true
