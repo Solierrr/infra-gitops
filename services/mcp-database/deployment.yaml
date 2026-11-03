@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: mcp-database
-          image: docker.io/solarianetwork/mcp-database:latest
+          image: docker.io/solarianetwork/mcp-database:0.3.0
           ports:
             - containerPort: 8001
           envFrom:
