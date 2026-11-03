@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: ai-geographic
-          image: docker.io/solarianetwork/ai-geographic:latest
+          image: docker.io/solarianetwork/ai-geographic:0.2.0
           ports:
             - containerPort: 8000
           envFrom:
