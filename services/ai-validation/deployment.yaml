@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ai-validation
-          image: docker.io/solarianetwork/ai-validation:latest
+          image: docker.io/solarianetwork/ai-validation:3.2.0
           ports:
             - containerPort: 8000
           envFrom:
